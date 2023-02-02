@@ -1,0 +1,18 @@
+import cv2
+import numpy as np
+image=cv2.imread('Itachi.PNG')
+resized=cv2.resize(image,(500,500),interpolation=cv2.INTER_AREA)
+gray=cv2.cvtColor(resized,cv2.COLOR_BGR2GRAY)
+blank=np.zeros(gray.shape[:2],dtype='uint8')
+blur=cv2.GaussianBlur(resized,(7,7),cv2.BORDER_DEFAULT)
+# cv2.imshow("BLUR",blur)
+# canny=cv2.Canny(gray,125,175)
+# cv2.imshow('canny edges',canny)
+ret,thresh=cv2.threshold(gray,125,255,cv2.THRESH_BINARY)
+cv2.imshow("threshold",thresh)
+# # cv2.imshow('Thresh',thresh)
+contours, hierarchies=cv2.findContours(thresh,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+print(f'{len(contours)} contour(s) found!')
+cv2.drawContours(thresh,contours,-1,(0,0,255),2)
+cv2.imshow('Contours drawn',thresh)
+cv2.waitKey(0)
